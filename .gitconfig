@@ -1,17 +1,21 @@
-[http "https://github.com"]
+[http]
     proxy = socks5h://127.0.0.1:1080
 [alias]
-    tree = log --graph --all --relative-date --abbrev-commit --format=\"%x09 %h %Cgreen%cd%Creset [%Cblue%cn%Creset] %C(auto)%d%Creset %s\"
-    l  = log --graph --oneline --decorate
-    ld = log --graph --pretty=format:'%C(yellow)%h%C(bold black white)%d%Creset %s %C(bold green)%cr %Creset%C(white)%an' --abbrev-commit --date=relative
-    ll = log --stat --decorate --source -p
+    tree = log --graph --all --relative-date --abbrev-commit --format=\"%x09 %h %Cgreen%cd%Creset [%Cblue%cn%Creset] %C(auto)%\nd%Creset %s\"
+    l  = log -8 --graph --oneline --decorate
+    ld = log -8 --graph --pretty=format:'%C(yellow)%h%C(bold black white)%d%Creset %s %C(bold green)%cr %Creset%C(white)%an' --abbrev-commit --date=relative
     ls = log --graph --all --pretty=format:'%C(auto)%h%d %s %C(green)(%ar)%Creset %C(blue)<%an>%Creset' --abbrev-commit --date=relative
+    ll = log --stat --decorate --source -p
+	first = !git checkout $(git rev-list --max-parents=0 HEAD)
+    next = "!f() { git checkout $(git log --reverse --ancestry-path --format='%H' HEAD..master | head -1); }; f"
+
 [core]
-    editor = nvim
+	editor = vim
+	autocrlf = false
+	pager = delta
+
 [credential]
-    helper = store
-[color]
-  ui = auto
+	helper = store
 [color "branch"]
   current   = bold white green
   local     = bold yellow
@@ -23,9 +27,37 @@
   changed   = bold yellow
   untracked = bold cyan
   nobranch  = bold red white
-[color "diff"]
-  meta = bold cyan
-  frag = bold magenta
-  old  = bold red
-  new  = bold green
-  whitespace = bold red white
+[commit]
+   gpgsign = true
+
+
+[delta]
+    features = navigate whole-file-hunks
+    hyperlinks = true
+    relative-paths = true
+    grep-file-style = red
+    commit-decoration-style = blue ol
+    commit-style = raw
+    commit-regex = ^▸
+
+
+[delta "whole-file-hunks"]
+    hunk-header-style = omit
+    file-style="bold cyan #EEEEEE"
+    file-decoration-style="magenta ul"
+    file-added-label = •
+    file-modified-label = •
+    file-removed-label = •
+    file-renamed-label = •
+    line-numbers-left-format = ""
+    line-numbers-right-format = "{np:^4}│"
+    line-numbers-minus-right-format = "{np:^4}┃"
+    line-numbers-plus-right-format = "{np:^4}┃"
+    navigate-regex = (^•|┃)
+
+[delta "hunk-header-with-filepath"]
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
