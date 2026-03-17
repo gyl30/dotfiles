@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ScriptPath=$(cd `dirname $0`; pwd)
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -38,4 +38,3 @@ curl -LsSf https://astral.sh/ty/install.sh | sh
 # https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-aarch64-unknown-linux-gnu.tar.gz
 # https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-unknown-linux-gnu.tar.gz
 # https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-
